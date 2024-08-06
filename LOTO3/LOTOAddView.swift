@@ -20,7 +20,6 @@ struct LOTOAddView: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @FocusState private var startFocus:Bool
     @FocusState private var fieldIsFocused:Bool
-    @State private var showAddSource:Bool = false
     @State private var sourceEdit:SourceInfo?
     
     // Data
@@ -147,7 +146,6 @@ struct LOTOAddView: View {
                         Button {
                             withAnimation {
                                 sourceInfo.append(SourceInfo(source_id: "", source_type: .electrical, source_device: "", source_location: "", source_method: "", source_check: ""))
-                                showAddSource = true
                                 updateDateEdited()
                             }
                         } label: {
@@ -175,8 +173,8 @@ struct LOTOAddView: View {
                     
                     Section {
                         VStack(spacing: 10) {
-                            Text("Date Added: \(formattedDateTime(Date.now))")
-                            Text("Last Edited: \(formattedDateTime(Date.now))")
+                            Text("Date Added: \(formattedDateTime(dateAdded))")
+                            Text("Last Edited: \(formattedDateTime(dateEdited))")
                         }
                         .listRowBackground(Color.clear)
                         .listRowSeparator(.hidden)

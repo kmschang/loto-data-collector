@@ -17,9 +17,9 @@ class LOTO:Identifiable {
     @Attribute(.unique) var id:String
     
     //General Data
-    @Attribute(.unique) var formName:String
+    var formName:String
     var formDescription:String
-    @Attribute(.unique) var procedureNumber:String
+    var procedureNumber:String
     var facility:String
     var location:String
     var revision:String
@@ -103,6 +103,33 @@ class LOTO:Identifiable {
         self.favorite = favorite
         self.dateAdded = dateAdded
         self.dateEdited = dateEdited
+    }
+    
+    func duplicate() -> LOTO {
+        return LOTO(
+            formName: self.formName + " copy",
+            formDescription: self.formDescription,
+            procedureNumber: self.procedureNumber,
+            facility: self.facility,
+            location: self.location,
+            revision: self.revision,
+            revisionDate: self.revisionDate,
+            originDate: self.originDate,
+            isolatoinPoints: self.isolatoinPoints,
+            notes: self.notes,
+            sourceInfo: self.sourceInfo.map { $0.duplicate() },
+            machineShopSequence: self.machineShopSequence,
+            isolateSequence: self.isolateSequence,
+            additionalNotes: self.additionalNotes,
+            completedBy: self.completedBy,
+            approvedBy: self.approvedBy,
+            approvedByCompany: self.approvedByCompany,
+            approvalDate: self.approvalDate,
+            status: self.status,
+            favorite: self.favorite,
+            dateAdded: Date(),
+            dateEdited: Date()
+        )
     }
     
     
@@ -267,12 +294,30 @@ enum Favorite: Codable, Identifiable, CaseIterable {
         }
     }
     
+    var favoriteIconOpposite: Image {
+        switch self {
+        case .isFavorite:
+            return Image(systemName: "star.slash")
+        case .notFavorite:
+            return Image(systemName: "star.fill")
+        }
+    }
+    
     var favoriteColor: Color {
         switch self {
         case .isFavorite:
             return .yellow
         case .notFavorite:
             return .gray
+        }
+    }
+    
+    var favoriteColorOpposite: Color {
+        switch self {
+        case .isFavorite:
+            return .gray
+        case .notFavorite:
+            return .yellow
         }
     }
 }
@@ -302,7 +347,8 @@ class SourceInfo:Identifiable {
         source_device: String,
         source_location: String,
         source_method: String,
-        source_check: String
+        source_check: String,
+        source_photo: Data? = nil
     ) {
         self.id = id
         self.source_id = source_id
@@ -311,6 +357,20 @@ class SourceInfo:Identifiable {
         self.source_location = source_location
         self.source_method = source_method
         self.source_check = source_check
+        self.source_photo = source_photo
+    }
+    
+    func duplicate() -> SourceInfo {
+        return SourceInfo(
+            id: UUID().uuidString,  // Generate a new ID
+            source_id: self.source_id,
+            source_type: self.source_type,
+            source_device: self.source_device,
+            source_location: self.source_location,
+            source_method: self.source_method,
+            source_check: self.source_check,
+            source_photo: self.source_photo
+        )
     }
     
 }
