@@ -256,7 +256,6 @@ struct textField: View {
                 } label: {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundStyle(.primary)
-                        .imageScale(.small)
                 }
             }
         }

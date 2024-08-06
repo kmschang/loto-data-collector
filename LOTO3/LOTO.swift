@@ -362,7 +362,7 @@ class SourceInfo:Identifiable {
     
     func duplicate() -> SourceInfo {
         return SourceInfo(
-            id: UUID().uuidString,  // Generate a new ID
+            id: UUID().uuidString,
             source_id: self.source_id,
             source_type: self.source_type,
             source_device: self.source_device,

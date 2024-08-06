@@ -142,7 +142,6 @@ struct sourceTextField:View {
                 } label: {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundStyle(.primary)
-                        .imageScale(.small)
                 }
             }
         }
