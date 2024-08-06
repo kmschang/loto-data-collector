@@ -113,7 +113,7 @@ struct LOTOAddView: View {
                     Section(header: Text("Sources")) {
                         
                         ForEach(sourceInfo) { source in
-                            Button{
+                            Button {
                                 sourceEdit = source
                             } label: {
                                 HStack(spacing: 10) {

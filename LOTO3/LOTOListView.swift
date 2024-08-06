@@ -12,9 +12,46 @@ struct LOTOListView: View {
     
     // Swift Data Model
     @Environment(\.modelContext) var modelContext
-    @Query var LOTOItems: [LOTO]
+    @Query(sort: \LOTO.formName) var LOTOItems: [LOTO]
+
+    var filteredAndSortedItems: [LOTO] {
+        let filtered = filterItems(LOTOItems)
+        return sortItems(filtered)
+    }
+
+    func filterItems(_ items: [LOTO]) -> [LOTO] {
+        switch selectedFilterOption {
+        case .all:
+            return items
+        case .favorite:
+            return items.filter { $0.favorite.isTrue }
+        case .inProgress:
+            return items.filter { $0.status == .inProgress }
+        case .awaitingApproval:
+            return items.filter { $0.status == .awaitingApproval }
+        case .completed:
+            return items.filter { $0.status == .completed }
+        case .today:
+            let calendar = Calendar.current
+            return items.filter { calendar.isDateInToday($0.dateAdded) }
+        case .electrical, .air, .water, .gas, .gravity, .othter:
+            return items.filter { $0.sourceInfo.contains { $0.source_type.rawValue == selectedFilterOption.rawValue - 6 } }
+        }
+    }
+
+    func sortItems(_ items: [LOTO]) -> [LOTO] {
+        items.sort(on: selectedSortOption)
+    }
+
     
     @Environment(\.colorScheme) var colorScheme: ColorScheme
+    
+    @State private var selectedSortOption: sortOption = .formName
+    @State private var selectedFilterOption: filterOption = .all
+    
+    func checkForFavorites() -> Bool {
+        return LOTOItems.contains { $0.favorite.isTrue == true }
+    }
     
     @State private var showAddSheet:Bool = false
     @State private var showSettingsSheet:Bool = false
@@ -31,7 +68,7 @@ struct LOTOListView: View {
                     // LOTO List
                     List {
                         Section(header: Text("All Forms")) {
-                            ForEach(LOTOItems) { item in
+                            ForEach(filteredAndSortedItems) { item in
                                 Button {
                                     LOTOEdit = item
                                 } label: {
@@ -41,6 +78,10 @@ struct LOTOListView: View {
                                             HStack(spacing: 10) {
                                                 item.status.statusIcon
                                                     .foregroundStyle(item.status.statusColor)
+                                                if item.favorite.isTrue {
+                                                    Image(systemName: "star.fill")
+                                                        .foregroundStyle(.yellow)
+                                                }
                                             }
                                             Spacer()
                                         }
@@ -169,14 +210,26 @@ struct LOTOListView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 10) {
-                        Button {
-                            
+                        Menu {
+                            Picker("Sort", selection: $selectedSortOption) {
+                                ForEach(sortOption.allCases) { option in
+                                    Label(option.sortString, systemImage: option.sortIconString)
+                                        .foregroundColor(option.sortIconColor)
+                                        .tag(option)
+                                }
+                            }
                         } label: {
-                            Label("Sort", systemImage: "ellipsis.circle")
+                            Label("Sort", systemImage: "arrow.up.arrow.down")
                         }
-                        
-                        Button {
-                            
+
+                        Menu {
+                            Picker("Filter", selection: $selectedFilterOption) {
+                                ForEach(filterOption.allCases) { option in
+                                    Label(option.filterString, systemImage: option.filterIconString)
+                                        .foregroundColor(option.filterIconColor)
+                                        .tag(option)
+                                }
+                            }
                         } label: {
                             Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
                         }
@@ -214,4 +267,183 @@ struct LOTOListView: View {
 }
 
 
+
+
+
+enum sortOption: Int, Codable, Identifiable, CaseIterable {
+    
+    case formName = 1, formDescription, procedureNumber, sourceType, dateAdded, dateEdited
+    
+    var id: Self {
+        self
+    }
+    
+    var sortString: String {
+        switch self {
+        case .formName:
+            return "Title"
+        case .formDescription:
+            return "Description"
+        case .procedureNumber:
+            return "Procedure Number"
+        case .dateAdded:
+            return "Date Added"
+        case .dateEdited:
+            return "Date Edited"
+        case .sourceType:
+            return "Source Type"
+        }
+    }
+    
+    var sortIconString: String {
+        switch self {
+        case .formName:
+            return "ellipsis.circle"
+        case .formDescription:
+            return "character"
+        case .procedureNumber:
+            return "number"
+        case .dateAdded:
+            return "calendar"
+        case .dateEdited:
+            return "calendar"
+        case .sourceType:
+            return "poweroutlet.type.b"
+        }
+    }
+    
+    var sortIconColor: Color {
+        switch self {
+        case .formName:
+            return .blue
+        case .formDescription:
+            return .orange
+        case .procedureNumber:
+            return .yellow
+        case .dateAdded:
+            return .red
+        case .dateEdited:
+            return .red
+        case .sourceType:
+            return .teal
+        }
+    }
+}
+
+private extension [LOTO] {
+    
+    func sort(on option: sortOption) -> [LOTO] {
+        switch option {
+        case .formName:
+            self.sorted(by: {$0.formName < $1.formName})
+        case .formDescription:
+            self.sorted(by: {$0.formDescription < $1.formDescription})
+        case .procedureNumber:
+            self.sorted(by: {$0.procedureNumber < $1.procedureNumber})
+        case .dateAdded:
+            self.sorted(by: {$0.dateAdded > $1.dateAdded})
+        case .dateEdited:
+            self.sorted(by: {$0.dateEdited > $1.dateEdited})
+        case .sourceType:
+            self.sorted(by: { $0.sourceInfo.first?.source_type.rawValue ?? 0 < $1.sourceInfo.first?.source_type.rawValue ?? 0 })
+        }
+    }
+    
+}
+
+enum filterOption: Int, Codable, Identifiable, CaseIterable {
+    
+    case all = 1, favorite, today, inProgress, awaitingApproval, completed, electrical, air, water, gas, gravity, othter
+    
+    var id: Self {
+        self
+    }
+    
+    var filterString: String  {
+        switch self {
+        case .all:
+            return "All"
+        case .favorite:
+            return "Favorite"
+        case .inProgress:
+            return "In Progress"
+        case .awaitingApproval:
+            return "Awaiting Approval"
+        case .completed:
+            return "Completed"
+        case .today:
+            return "Today"
+        case .electrical:
+            return "Electrical"
+        case .air:
+            return "Air"
+        case .water:
+            return "Water"
+        case .gas:
+            return "Gas"
+        case .gravity:
+            return "Gravity"
+        case .othter:
+            return "Other"
+        }
+    }
+    
+    var filterIconString: String {
+        switch self {
+        case .all :
+            return "line.3.horizontal.decrease.circle"
+        case .favorite:
+            return "star.fill"
+        case .inProgress:
+            return "smallcircle.filled.circle"
+        case .awaitingApproval:
+            return "circle.dashed.inset.filled"
+        case .completed:
+            return "checkmark.circle.fill"
+        case .today:
+            return "calendar"
+        case .electrical:
+            return "bolt.fill"
+        case .air:
+            return "wind"
+        case .water:
+            return "drop.fill"
+        case .gas:
+            return "fuelpump.fill"
+        case .gravity:
+            return "globe.americas.fill"
+        case .othter:
+            return "diamond.inset.filled"
+        }
+    }
+    
+    var filterIconColor:Color {
+        switch self {
+        case .all:
+            return .blue
+        case .favorite:
+            return .yellow
+        case .inProgress:
+            return .red
+        case .awaitingApproval:
+            return .purple
+        case .completed:
+            return .green
+        case .today:
+            return .red
+        case .electrical:
+            return .yellow
+        case .air:
+            return .teal
+        case .water:
+            return .green
+        case .gas:
+            return .red
+        case .gravity:
+            return .purple
+        case .othter:
+            return .primary
+        }
+    }
+}
 
