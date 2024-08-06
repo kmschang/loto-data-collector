@@ -15,9 +15,18 @@ struct LOTOListView: View {
     @Query(sort: \LOTO.formName) var LOTOItems: [LOTO]
 
     var filteredAndSortedItems: [LOTO] {
-        let filtered = filterItems(LOTOItems)
+        let filteredBySearch = LOTOItems.filter { item in
+            searchString.isEmpty ||
+            item.formName.localizedCaseInsensitiveContains(searchString) ||
+            item.formDescription.localizedCaseInsensitiveContains(searchString) ||
+            item.procedureNumber.localizedCaseInsensitiveContains(searchString) ||
+            item.sourceInfo.contains { $0.source_type.sourceString.localizedCaseInsensitiveCompare(searchString) == .orderedSame }
+        }
+        let filtered = filterItems(filteredBySearch)
         return sortItems(filtered)
     }
+
+
 
     func filterItems(_ items: [LOTO]) -> [LOTO] {
         switch selectedFilterOption {
@@ -78,20 +87,37 @@ struct LOTOListView: View {
                                             HStack(spacing: 10) {
                                                 item.status.statusIcon
                                                     .foregroundStyle(item.status.statusColor)
+                                            }
+                                            Spacer()
+                                        }
+                                        VStack(alignment: .leading) {
+                                            HStack(spacing: 10){
+                                                Text(item.formName)
+                                                    .font(.headline)
                                                 if item.favorite.isTrue {
                                                     Image(systemName: "star.fill")
                                                         .foregroundStyle(.yellow)
                                                 }
                                             }
-                                            Spacer()
-                                        }
-                                        VStack(alignment: .leading) {
-                                            Text(item.formName)
-                                                .font(.headline)
-                                            if !item.formDescription.isEmpty {
-                                                Text(item.formDescription)
-                                                    .font(.subheadline)
-                                                    .lineLimit(2)
+                                            switch selectedSortOption {
+                                            case .formName, .formDescription:
+                                                if !item.formDescription.isEmpty {
+                                                    Text(item.formDescription)
+                                                        .font(.subheadline)
+                                                        .lineLimit(2)
+                                                }
+                                            case .procedureNumber:
+                                                if !item.procedureNumber.isEmpty {
+                                                    Text("#\(item.procedureNumber)")
+                                                        .font(.subheadline)
+                                                        .lineLimit(1)
+                                                }
+                                            case .dateAdded:
+                                                Text(formattedDateTime(item.dateAdded))
+                                            case .dateEdited:
+                                                Text(formattedDateTime(item.dateEdited))
+                                            case .sourceType:
+                                                sourceDescription(item: item)
                                             }
                                         }
                                         Spacer()
@@ -177,16 +203,23 @@ struct LOTOListView: View {
                 LOTOEditView(item: item)
             }
             .overlay {
-                if LOTOItems.isEmpty && !searchString.isEmpty {
+                if filteredAndSortedItems.isEmpty && !searchString.isEmpty {
                     ContentUnavailableView(
                         "No Results for \"\(searchString)\"",
                         systemImage: "magnifyingglass",
                         description: Text("Check the spelling or try a new search")
                     )
                 }
-                if searchString.isEmpty && LOTOItems.isEmpty{
+                if searchString.isEmpty && filteredAndSortedItems.isEmpty && selectedFilterOption == .all {
                     ContentUnavailableView(
                         "No LOTO Forms",
+                        systemImage: "list.bullet.rectangle.portrait",
+                        description: Text("Click the + button to add LOTO Forms")
+                    )
+                }
+                if searchString.isEmpty && filteredAndSortedItems.isEmpty && selectedFilterOption != .all {
+                    ContentUnavailableView(
+                        "No \(selectedFilterOption.filterString) LOTO Forms",
                         systemImage: "list.bullet.rectangle.portrait",
                         description: Text("Click the + button to add LOTO Forms")
                     )
@@ -206,6 +239,7 @@ struct LOTOListView: View {
                         } label: {
                             Label("Undo", systemImage: "arrow.uturn.backward.circle")
                         }
+                        .disabled(true)
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
@@ -219,7 +253,8 @@ struct LOTOListView: View {
                                 }
                             }
                         } label: {
-                            Label("Sort", systemImage: "arrow.up.arrow.down")
+                            Label("Sort", systemImage: selectedSortOption.sortIconString)
+                                .foregroundStyle(selectedSortOption.sortIconColor)
                         }
 
                         Menu {
@@ -231,7 +266,8 @@ struct LOTOListView: View {
                                 }
                             }
                         } label: {
-                            Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
+                            Label("Filter", systemImage: selectedFilterOption.filterIconString)
+                                .foregroundStyle(selectedFilterOption.filterIconColor)
                         }
                     }
                 }
@@ -447,3 +483,20 @@ enum filterOption: Int, Codable, Identifiable, CaseIterable {
     }
 }
 
+struct sourceDescription: View {
+    
+    let item: LOTO
+    
+    var body: some View {
+        HStack(spacing: 5) {
+            ForEach(Array(Set(item.sourceInfo.map { $0.source_type })), id: \.self) { sourceType in
+                HStack(spacing: 2) {
+                    Image(systemName: sourceType.sourceIconString)
+                        .foregroundColor(sourceType.sourceColor)
+                    Text(sourceType.sourceString)
+                        .font(.caption)
+                }
+            }
+        }
+    }
+}
