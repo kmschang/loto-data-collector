@@ -177,7 +177,9 @@ enum Status: Int, Codable, Identifiable, CaseIterable, Comparable {
         case .inProgress:
             Image(systemName: "smallcircle.filled.circle")
         case .awaitingApproval:
-            Image(systemName: "circle.dashed.inset.filled")
+//            Image(systemName: "circle.dashed.inset.filled")
+//            Image(systemName: "circle.dashed")
+            Image(systemName: "person.crop.circle.dashed.circle")
         case .completed:
             Image(systemName: "checkmark.circle.fill")
         }
