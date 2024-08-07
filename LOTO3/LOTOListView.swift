@@ -12,7 +12,8 @@ struct LOTOListView: View {
     
     // Swift Data Model
     @Environment(\.modelContext) var modelContext
-    @Query(sort: \LOTO.formName) var LOTOItems: [LOTO]
+    @Query(filter: #Predicate<LOTO> { loto in
+        !loto.deleted}, sort: \LOTO.formName) var LOTOItems: [LOTO]
 
     var filteredAndSortedItems: [LOTO] {
         let filteredBySearch = LOTOItems.filter { item in
@@ -26,7 +27,7 @@ struct LOTOListView: View {
         return sortItems(filtered)
     }
 
-
+    @State private var deletedItems: [LOTO] = []
 
     func filterItems(_ items: [LOTO]) -> [LOTO] {
         switch selectedFilterOption {
@@ -91,7 +92,7 @@ struct LOTOListView: View {
                                             Spacer()
                                         }
                                         VStack(alignment: .leading) {
-                                            HStack(spacing: 10){
+                                            HStack(spacing: 10) {
                                                 Text(item.formName)
                                                     .font(.headline)
                                                 if item.favorite.isTrue {
@@ -127,7 +128,7 @@ struct LOTOListView: View {
                                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                     Button(role: .destructive) {
                                         withAnimation {
-                                            deleteItem(item)
+                                            markAsDeleted(item)
                                         }
                                     } label: {
                                         Image(systemName: "trash")
@@ -235,11 +236,11 @@ struct LOTOListView: View {
                         }
                         
                         Button {
-                            
+                            undoDelete()
                         } label: {
                             Label("Undo", systemImage: "arrow.uturn.backward.circle")
                         }
-                        .disabled(true)
+                        .disabled(deletedItems.isEmpty)
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
@@ -293,6 +294,18 @@ struct LOTOListView: View {
     
     func deleteItem(_ item: LOTO) {
         modelContext.delete(item)
+    }
+    
+    func markAsDeleted(_ item: LOTO) {
+        item.deleted = true
+        deletedItems.append(item)
+        try? modelContext.save()
+    }
+    
+    func undoDelete() {
+        guard let lastDeleted = deletedItems.popLast() else { return }
+        lastDeleted.deleted = false
+        try? modelContext.save()
     }
     
 }

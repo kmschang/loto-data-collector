@@ -41,7 +41,7 @@ struct SourceEditView: View {
                     sourceTextField(fieldName: "Check", fieldData: $source.source_check)
                     
                     Section(header: Text("Photos")) {
-                        if let photo = unwrapPhoto(source.source_photo) {
+                        if let photo = unwrapPhotoOptional(source.source_photo) {
                             HStack {
                                 Spacer()
                                 Image(uiImage: photo)
@@ -89,6 +89,12 @@ struct SourceEditView: View {
                             }
                         }
                         
+//                        if let photoData = source.source_photo {
+//                            ShareLink(item: Image(uiImage: unwrapPhoto(photoData)),
+//                                      preview: SharePreview(source.source_id.isEmpty ? "\(source.source_type.sourceString) Source Photo" : "\(source.source_type.sourceString) - \(source.source_id) Source Photo", image: Image(uiImage: unwrapPhoto(photoData))))
+//                        }
+
+                        
                     }
                 }
                 .scrollDismissesKeyboard(.interactively)
@@ -119,7 +125,7 @@ struct SourceEditView: View {
 }
 
 #Preview {
-    SourceEditView(source: SourceInfo(source_id: "", source_type: .electrical, source_device: "", source_location: "", source_method: "", source_check: ""))
+    SourceEditView(source: SourceInfo(source_id: "1000 PSI", source_type: .air, source_device: "Air Compressor", source_location: "Back of Garage", source_method: "Unplug and Lock", source_check: "Turn on after locking out", source_photo: Data()))
 }
 
 struct sourceTextField:View {
@@ -164,14 +170,20 @@ func wrapPhoto(_ photo: PhotosPickerItem) async -> Data? {
     return nil
 }
 
-func unwrapPhoto(_ photoData: Data) -> UIImage? {
-    return UIImage(data: photoData)
-}
 
-func unwrapPhoto(_ photoData: Data?) -> UIImage? {
+func unwrapPhotoOptional(_ photoData: Data?) -> UIImage? {
     guard let data = photoData else { return nil }
     return UIImage(data: data)
 }
+
+func unwrapPhoto(_ photoData: Data?) -> UIImage {
+    guard let data = photoData, let image = UIImage(data: data) else {
+        return UIImage(systemName: "photo") ?? UIImage() // Return a default image if unwrapping fails
+    }
+    return image
+}
+
+
 
 extension UIScreen{
    static let screenWidth = UIScreen.main.bounds.size.width

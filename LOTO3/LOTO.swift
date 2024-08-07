@@ -54,6 +54,9 @@ class LOTO:Identifiable {
     var dateAdded:Date
     var dateEdited:Date
     
+    // Deletion
+    var deleted:Bool = false
+    
     
     init(
         id: String = UUID().uuidString,
