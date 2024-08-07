@@ -17,6 +17,8 @@ struct LOTOListView: View {
     
     var LOTOItems: [LOTO]
 
+    @State private var sortingForward: Bool = true
+    
     var filteredAndSortedItems: [LOTO] {
         let filteredBySearch = LOTOItems.filter { item in
             searchString.isEmpty ||
@@ -26,7 +28,11 @@ struct LOTOListView: View {
             item.sourceInfo.contains { $0.source_type.sourceString.localizedCaseInsensitiveCompare(searchString) == .orderedSame }
         }
         let filtered = filterItems(filteredBySearch)
-        return sortItems(filtered)
+        if (sortingForward) {
+            return sortItems(filtered)
+        } else {
+            return sortItems(filtered).reversed()
+        }
     }
 
     @State private var deletedItems: [LOTO] = []
