@@ -8,8 +8,10 @@
 import SwiftUI
 import SwiftData
 
+
 @main
 struct LOTO3App: App {
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             LOTO.self,

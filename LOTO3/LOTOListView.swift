@@ -13,7 +13,9 @@ struct LOTOListView: View {
     // Swift Data Model
     @Environment(\.modelContext) var modelContext
     @Query(filter: #Predicate<LOTO> { loto in
-        !loto.deleted}, sort: \LOTO.formName) var LOTOItems: [LOTO]
+        !loto.deleted}, sort: \LOTO.formName) 
+    
+    var LOTOItems: [LOTO]
 
     var filteredAndSortedItems: [LOTO] {
         let filteredBySearch = LOTOItems.filter { item in
