@@ -13,7 +13,7 @@ struct LOTOListView: View {
     // Swift Data Model
     @Environment(\.modelContext) var modelContext
     @Query(filter: #Predicate<LOTO> { loto in
-        !loto.deleted}, sort: \LOTO.formName) 
+        !loto.deleted}, sort: \LOTO.formName)
     
     var LOTOItems: [LOTO]
 
