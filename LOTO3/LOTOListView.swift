@@ -85,7 +85,16 @@ struct LOTOListView: View {
                 ZStack {
                     // LOTO List
                     List {
-                        Section(header: Text("All Forms")) {
+                        Section (
+                            header: CustomHeaderView(
+                                title: "All Forms",
+                                selectedSortOption: $selectedSortOption,
+                                ascending: sortingForward,
+                                sortDirection: {
+                                    sortingForward.toggle()
+                                }
+                            ))
+                        {
                             ForEach(filteredAndSortedItems) { item in
                                 Button {
                                     LOTOEdit = item
@@ -253,18 +262,18 @@ struct LOTOListView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 10) {
-                        Menu {
-                            Picker("Sort", selection: $selectedSortOption) {
-                                ForEach(sortOption.allCases) { option in
-                                    Label(option.sortString, systemImage: option.sortIconString)
-                                        .foregroundColor(option.sortIconColor)
-                                        .tag(option)
-                                }
-                            }
-                        } label: {
-                            Label("Sort", systemImage: selectedSortOption.sortIconString)
-                                .foregroundStyle(selectedSortOption.sortIconColor)
-                        }
+//                        Menu {
+//                            Picker("Sort", selection: $selectedSortOption) {
+//                                ForEach(sortOption.allCases) { option in
+//                                    Label(option.sortString, systemImage: option.sortIconString)
+//                                        .foregroundColor(option.sortIconColor)
+//                                        .tag(option)
+//                                }
+//                            }
+//                        } label: {
+//                            Label("Sort", systemImage: selectedSortOption.sortIconString)
+//                                .foregroundStyle(selectedSortOption.sortIconColor)
+//                        }
 
                         Menu {
                             Picker("Filter", selection: $selectedFilterOption) {
@@ -355,7 +364,7 @@ enum sortOption: Int, Codable, Identifiable, CaseIterable {
     var sortIconString: String {
         switch self {
         case .formName:
-            return "ellipsis.circle"
+            return "character"
         case .formDescription:
             return "character"
         case .procedureNumber:
@@ -518,6 +527,40 @@ struct sourceDescription: View {
                         .font(.caption)
                 }
             }
+        }
+    }
+}
+
+struct CustomHeaderView: View {
+    var title: String
+    @Binding var selectedSortOption: sortOption
+    var ascending: Bool
+    var sortDirection: () -> Void
+    
+    var body: some View {
+        HStack(spacing: 15) {
+            Text(title)
+            Spacer()
+            Menu {
+                Picker("Sort", selection: $selectedSortOption) {
+                    ForEach(LOTO3.sortOption.allCases) { option in
+                        Label(option.sortString, systemImage: option.sortIconString)
+                            .foregroundColor(option.sortIconColor)
+                            .tag(option)
+                    }
+                }
+            } label: {
+                HStack(spacing: 5){
+//                    Image(systemName: selectedSortOption.sortIconString)
+                    Image(systemName: "line.3.horizontal.decrease")
+                }
+            }
+            
+            Image(systemName: ascending ? "arrow.down" : "arrow.up")
+                .foregroundStyle(.blue)
+                .onTapGesture {
+                    sortDirection()
+                }
         }
     }
 }
