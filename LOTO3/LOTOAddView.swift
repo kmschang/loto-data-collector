@@ -172,7 +172,7 @@ struct LOTOAddView: View {
                     }
                     
                     Section {
-                        VStack(spacing: 10) {
+                        VStack(alignment: .leading, spacing: 10) {
                             Text("Date Added: \(formattedDateTime(dateAdded))")
                             Text("Last Edited: \(formattedDateTime(dateEdited))")
                         }
@@ -231,9 +231,52 @@ struct LOTOAddView: View {
 
 func formattedDateTime(_ date:Date) -> String {
     let formatter = DateFormatter()
-    formatter.dateFormat = "MMMM d, yyyy 'at' h:mm a"
-    return formatter.string(from: date)
+    if areDatesOnTheSameDay(date1: Date.now, date2: date) {
+        formatter.dateFormat = "'Today at' h:mm a"
+        return formatter.string(from: date)
+    } else if(isYesterday(date: date)) {
+        formatter.dateFormat = "'Yesterday at' h:mm a"
+        return formatter.string(from: date)
+    } else if (isInPastDays(date: date, days: 6)) {
+        formatter.dateFormat = "EEEE 'at' h:mm a"
+        return formatter.string(from: date)
+    } else {
+        formatter.dateFormat = "MMMM d, yyyy 'at' h:mm a"
+        return formatter.string(from: date)
+    }
 }
+
+func isYesterday(date: Date) -> Bool {
+    let calendar = Calendar.current
+    let today = Date()
+    
+    // Get the start and end of today
+    let startOfToday = calendar.startOfDay(for: today)
+    _ = calendar.date(byAdding: .day, value: 1, to: startOfToday)!
+    
+    // Get the start of yesterday
+    let startOfYesterday = calendar.date(byAdding: .day, value: -1, to: startOfToday)!
+    
+    // Check if the date falls between the start and end of yesterday
+    return date >= startOfYesterday && date < startOfToday
+}
+
+func isInPastDays(date: Date, days:Int) -> Bool {
+    let calendar = Calendar.current
+    let now = Date()
+    
+    // Get the start of today
+    let startOfToday = calendar.startOfDay(for: now)
+    
+    // Calculate the date 6 days ago from the start of today
+    guard let startOf6DaysAgo = calendar.date(byAdding: .day, value: -days, to: startOfToday) else {
+        return false
+    }
+    
+    // Check if the given date is between 6 days ago and now
+    return date >= startOf6DaysAgo && date < startOfToday
+}
+
 
 struct textField: View {
     

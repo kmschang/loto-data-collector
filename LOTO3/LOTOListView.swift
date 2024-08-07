@@ -132,8 +132,10 @@ struct LOTOListView: View {
                                                 }
                                             case .dateAdded:
                                                 Text(formattedDateTime(item.dateAdded))
+                                                    .font(.subheadline)
                                             case .dateEdited:
                                                 Text(formattedDateTime(item.dateEdited))
+                                                    .font(.subheadline)
                                             case .sourceType:
                                                 sourceDescription(item: item)
                                             }
@@ -285,7 +287,7 @@ struct LOTOListView: View {
                             }
                         } label: {
                             Label("Filter", systemImage: selectedFilterOption.filterIconString)
-                                .foregroundStyle(selectedFilterOption.filterIconColor)
+                                .tint(selectedFilterOption.filterIconColor)
                         }
                     }
                 }
@@ -551,7 +553,6 @@ struct CustomHeaderView: View {
                 }
             } label: {
                 HStack(spacing: 5){
-//                    Image(systemName: selectedSortOption.sortIconString)
                     Image(systemName: "line.3.horizontal.decrease")
                 }
             }

@@ -122,7 +122,7 @@ struct LOTOEditView: View {
                     }
                     
                     Section {
-                        VStack(spacing: 10) {
+                        VStack(alignment: .leading, spacing: 10) {
                             Text("Date Added: \(formattedDateTime(item.dateAdded))")
                             Text("Last Edited: \(formattedDateTime(item.dateEdited))")
                         }
