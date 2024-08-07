@@ -264,18 +264,19 @@ struct LOTOListView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 10) {
-//                        Menu {
-//                            Picker("Sort", selection: $selectedSortOption) {
-//                                ForEach(sortOption.allCases) { option in
-//                                    Label(option.sortString, systemImage: option.sortIconString)
-//                                        .foregroundColor(option.sortIconColor)
-//                                        .tag(option)
-//                                }
-//                            }
-//                        } label: {
-//                            Label("Sort", systemImage: selectedSortOption.sortIconString)
-//                                .foregroundStyle(selectedSortOption.sortIconColor)
-//                        }
+                        Menu {
+                            Picker("Sort", selection: $selectedSortOption) {
+                                ForEach(sortOption.allCases) { option in
+                                    Label(option.sortString, systemImage: option.sortIconString)
+                                        .foregroundColor(option.sortIconColor)
+                                        .tag(option)
+                                }
+                            }
+                        } label: {
+                            Label("Sort", systemImage: selectedSortOption.sortIconString)
+                                .foregroundStyle(colorScheme == .dark ? .black : .white)
+                        }
+                        .disabled(true)
 
                         Menu {
                             Picker("Filter", selection: $selectedFilterOption) {
@@ -287,6 +288,7 @@ struct LOTOListView: View {
                             }
                         } label: {
                             Label("Filter", systemImage: selectedFilterOption.filterIconString)
+                                .foregroundStyle(selectedFilterOption.filterIconColor)
                                 .tint(selectedFilterOption.filterIconColor)
                         }
                     }
