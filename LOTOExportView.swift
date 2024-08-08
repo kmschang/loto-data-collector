@@ -30,7 +30,7 @@ struct LOTOExportView: View {
                         Button {
                             exportAlert = !checkIsFilled(item)
                         } label: {
-                            Label("Export", systemImage: "square.and.arrow.up")
+                            Image(systemName: "square.and.arrow.up")
                         }
                         .alert("Are you sure you want to export? Not all fields are filled.", isPresented: $exportAlert) {
                                 Button("Yes", role: .destructive) {

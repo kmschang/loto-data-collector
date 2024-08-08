@@ -230,6 +230,7 @@ struct LOTOListView: View {
                  LOTOShare = nil
             } content: { item in
                 LOTOExportView(item: item)
+                    .interactiveDismissDisabled()
             }
             .overlay {
                 if filteredAndSortedItems.isEmpty && !searchString.isEmpty {
@@ -395,7 +396,7 @@ enum sortOption: Int, Codable, Identifiable, CaseIterable {
         case .sourceType:
             return "poweroutlet.type.b"
         case .favorite:
-            return "star"
+            return "star.fill"
         }
     }
     
