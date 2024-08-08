@@ -14,6 +14,8 @@ struct LOTOExportView: View {
     
     @Environment(\.dismiss) var dismiss
     
+    @State private var exportAlert:Bool = false
+    
     var body: some View {
         Group {
             if let url = Bundle.main.url(forResource: "LOTO", withExtension: "pdf") {
@@ -26,9 +28,17 @@ struct LOTOExportView: View {
                         }
                         Spacer()
                         Button {
-                            print("Exporting")
+                            exportAlert = !checkIsFilled(item)
                         } label: {
                             Label("Export", systemImage: "square.and.arrow.up")
+                        }
+                        .alert("Are you sure you want to export? Not all fields are filled.", isPresented: $exportAlert) {
+                                Button("Yes", role: .destructive) {
+                                    print("Exporting")
+                                }
+                                Button("Cancel", role: .cancel) {
+                                    dismiss()
+                                }
                         }
                     }
                     .padding(.top, 10)
@@ -56,6 +66,14 @@ struct LOTOExportView: View {
 
 #Preview {
     LOTOExportView(item: LOTO(formName: "", formDescription: "", procedureNumber: "", facility: "", location: "", revision: "", revisionDate: Date.now, originDate: Date.now, isolatoinPoints: "", notes: "", sourceInfo: [], machineShopSequence: "", isolateSequence: "", additionalNotes: "", completedBy: "", approvedBy: "", approvedByCompany: "", approvalDate: Date.now, status: .inProgress, favorite: .notFavorite, dateAdded: Date.now, dateEdited: Date.now))
+}
+
+func checkIsFilled(_ item:LOTO) -> Bool {
+    if (item.formName.isEmpty || item.formDescription.isEmpty || item.procedureNumber.isEmpty || item.facility.isEmpty || item.location.isEmpty || item.revision.isEmpty || item.isolatoinPoints.isEmpty || item.machineShopSequence.isEmpty || item.isolateSequence.isEmpty || item.approvedByCompany.isEmpty || item.completedBy.isEmpty || item.approvedBy.isEmpty) {
+        return false
+    } else {
+        return true
+    }
 }
 
 func fillPDFFields(url: URL, description: String, item:LOTO) -> PDFDocument? {

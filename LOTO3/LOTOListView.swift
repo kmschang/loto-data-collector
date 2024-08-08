@@ -77,7 +77,6 @@ struct LOTOListView: View {
     @State private var searchString:String = ""
     
     @State private var LOTOEdit: LOTO?
-    
     @State private var LOTOShare: LOTO?
     
     var body: some View {
