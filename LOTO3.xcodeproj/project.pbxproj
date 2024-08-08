@@ -16,7 +16,7 @@
 		0ED6D68D2C615146000BEAC2 /* LOTOEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED6D68C2C615146000BEAC2 /* LOTOEditView.swift */; };
 		0ED6D68F2C6165EC000BEAC2 /* SourceEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED6D68E2C6165EC000BEAC2 /* SourceEditView.swift */; };
 		0EDBA8152C64F73C00FEAB17 /* LOTOExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDBA8142C64F73C00FEAB17 /* LOTOExportView.swift */; };
-		0EDBA8212C65065300FEAB17 /* LOTO.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 0EDBA8202C65065300FEAB17 /* LOTO.pdf */; };
+		0EDBA8252C650C2000FEAB17 /* LOTO.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 0EDBA8242C650C2000FEAB17 /* LOTO.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,7 +30,7 @@
 		0ED6D68C2C615146000BEAC2 /* LOTOEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LOTOEditView.swift; sourceTree = "<group>"; };
 		0ED6D68E2C6165EC000BEAC2 /* SourceEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceEditView.swift; sourceTree = "<group>"; };
 		0EDBA8142C64F73C00FEAB17 /* LOTOExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LOTOExportView.swift; sourceTree = "<group>"; };
-		0EDBA8202C65065300FEAB17 /* LOTO.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = LOTO.pdf; sourceTree = "<group>"; };
+		0EDBA8242C650C2000FEAB17 /* LOTO.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = LOTO.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +70,7 @@
 				0ED6D68C2C615146000BEAC2 /* LOTOEditView.swift */,
 				0ED6D6862C6150E2000BEAC2 /* LOTO.swift */,
 				0ED6D68E2C6165EC000BEAC2 /* SourceEditView.swift */,
-				0EDBA8202C65065300FEAB17 /* LOTO.pdf */,
+				0EDBA8242C650C2000FEAB17 /* LOTO.pdf */,
 				0ED6D67C2C615082000BEAC2 /* Assets.xcassets */,
 				0ED6D67E2C615082000BEAC2 /* Preview Content */,
 			);
@@ -143,9 +143,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EDBA8252C650C2000FEAB17 /* LOTO.pdf in Resources */,
 				0ED6D6802C615082000BEAC2 /* Preview Assets.xcassets in Resources */,
 				0ED6D67D2C615082000BEAC2 /* Assets.xcassets in Resources */,
-				0EDBA8212C65065300FEAB17 /* LOTO.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

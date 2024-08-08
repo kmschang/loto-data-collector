@@ -61,6 +61,8 @@ struct LOTOExportView: View {
 func fillPDFFields(url: URL, description: String, item:LOTO) -> PDFDocument? {
     guard let document = PDFDocument(url: url) else { return nil }
     
+    let numSources:Int = item.sourceInfo.count
+    
     for i in 0..<document.pageCount {
         if let page = document.page(at: i) {
             for annotation in page.annotations {
@@ -91,8 +93,418 @@ func fillPDFFields(url: URL, description: String, item:LOTO) -> PDFDocument? {
                 if annotation.fieldName == "Notes" {
                     annotation.widgetStringValue = item.notes
                 }
-                if annotation.fieldName == "ID_1" {
-                    annotation.widgetStringValue = item.sourceInfo[0].source_id
+                
+                if (numSources == 1) {
+                    if annotation.fieldName == "ID_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_id
+                    }
+                    if annotation.fieldName == "Source_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_device
+                    }
+                    if annotation.fieldName == "Location_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_location
+                    }
+                    if annotation.fieldName == "Method_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_method
+                    }
+                    if annotation.fieldName == "Check_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_check
+                    }
+                }
+                if (numSources == 2) {
+                    if annotation.fieldName == "ID_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_id
+                    }
+                    if annotation.fieldName == "Source_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_device
+                    }
+                    if annotation.fieldName == "Location_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_location
+                    }
+                    if annotation.fieldName == "Method_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_method
+                    }
+                    if annotation.fieldName == "Check_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_check
+                    }
+                    if annotation.fieldName == "ID_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_id
+                    }
+                    if annotation.fieldName == "Source_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_device
+                    }
+                    if annotation.fieldName == "Location_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_location
+                    }
+                    if annotation.fieldName == "Method_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_method
+                    }
+                    if annotation.fieldName == "Check_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_check
+                    }
+                }
+                if (numSources == 3) {
+                    if annotation.fieldName == "ID_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_id
+                    }
+                    if annotation.fieldName == "Source_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_device
+                    }
+                    if annotation.fieldName == "Location_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_location
+                    }
+                    if annotation.fieldName == "Method_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_method
+                    }
+                    if annotation.fieldName == "Check_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_check
+                    }
+                    if annotation.fieldName == "ID_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_id
+                    }
+                    if annotation.fieldName == "Source_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_device
+                    }
+                    if annotation.fieldName == "Location_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_location
+                    }
+                    if annotation.fieldName == "Method_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_method
+                    }
+                    if annotation.fieldName == "Check_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_check
+                    }
+                    if annotation.fieldName == "ID_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_id
+                    }
+                    if annotation.fieldName == "Source_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_device
+                    }
+                    if annotation.fieldName == "Location_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_location
+                    }
+                    if annotation.fieldName == "Method_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_method
+                    }
+                    if annotation.fieldName == "Check_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_check
+                    }
+                }
+                if (numSources == 4) {
+                    if annotation.fieldName == "ID_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_id
+                    }
+                    if annotation.fieldName == "Source_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_device
+                    }
+                    if annotation.fieldName == "Location_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_location
+                    }
+                    if annotation.fieldName == "Method_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_method
+                    }
+                    if annotation.fieldName == "Check_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_check
+                    }
+                    if annotation.fieldName == "ID_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_id
+                    }
+                    if annotation.fieldName == "Source_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_device
+                    }
+                    if annotation.fieldName == "Location_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_location
+                    }
+                    if annotation.fieldName == "Method_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_method
+                    }
+                    if annotation.fieldName == "Check_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_check
+                    }
+                    if annotation.fieldName == "ID_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_id
+                    }
+                    if annotation.fieldName == "Source_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_device
+                    }
+                    if annotation.fieldName == "Location_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_location
+                    }
+                    if annotation.fieldName == "Method_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_method
+                    }
+                    if annotation.fieldName == "Check_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_check
+                    }
+                    if annotation.fieldName == "ID_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_id
+                    }
+                    if annotation.fieldName == "Source_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_device
+                    }
+                    if annotation.fieldName == "Location_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_location
+                    }
+                    if annotation.fieldName == "Method_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_method
+                    }
+                    if annotation.fieldName == "Check_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_check
+                    }
+                }
+                if (numSources == 5) {
+                    if annotation.fieldName == "ID_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_id
+                    }
+                    if annotation.fieldName == "Source_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_device
+                    }
+                    if annotation.fieldName == "Location_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_location
+                    }
+                    if annotation.fieldName == "Method_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_method
+                    }
+                    if annotation.fieldName == "Check_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_check
+                    }
+                    if annotation.fieldName == "ID_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_id
+                    }
+                    if annotation.fieldName == "Source_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_device
+                    }
+                    if annotation.fieldName == "Location_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_location
+                    }
+                    if annotation.fieldName == "Method_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_method
+                    }
+                    if annotation.fieldName == "Check_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_check
+                    }
+                    if annotation.fieldName == "ID_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_id
+                    }
+                    if annotation.fieldName == "Source_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_device
+                    }
+                    if annotation.fieldName == "Location_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_location
+                    }
+                    if annotation.fieldName == "Method_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_method
+                    }
+                    if annotation.fieldName == "Check_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_check
+                    }
+                    if annotation.fieldName == "ID_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_id
+                    }
+                    if annotation.fieldName == "Source_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_device
+                    }
+                    if annotation.fieldName == "Location_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_location
+                    }
+                    if annotation.fieldName == "Method_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_method
+                    }
+                    if annotation.fieldName == "Check_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_check
+                    }
+                    if annotation.fieldName == "ID_5" {
+                        annotation.widgetStringValue = item.sourceInfo[4].source_id
+                    }
+                    if annotation.fieldName == "Source_5" {
+                        annotation.widgetStringValue = item.sourceInfo[4].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_5" {
+                        annotation.widgetStringValue = item.sourceInfo[4].source_device
+                    }
+                    if annotation.fieldName == "Location_5" {
+                        annotation.widgetStringValue = item.sourceInfo[4].source_location
+                    }
+                    if annotation.fieldName == "Method_5" {
+                        annotation.widgetStringValue = item.sourceInfo[4].source_method
+                    }
+                    if annotation.fieldName == "Check_5" {
+                        annotation.widgetStringValue = item.sourceInfo[4].source_check
+                    }
+                }
+                if (numSources == 6) {
+                    if annotation.fieldName == "ID_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_id
+                    }
+                    if annotation.fieldName == "Source_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_device
+                    }
+                    if annotation.fieldName == "Location_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_location
+                    }
+                    if annotation.fieldName == "Method_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_method
+                    }
+                    if annotation.fieldName == "Check_1" {
+                        annotation.widgetStringValue = item.sourceInfo[0].source_check
+                    }
+                    if annotation.fieldName == "ID_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_id
+                    }
+                    if annotation.fieldName == "Source_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_device
+                    }
+                    if annotation.fieldName == "Location_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_location
+                    }
+                    if annotation.fieldName == "Method_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_method
+                    }
+                    if annotation.fieldName == "Check_2" {
+                        annotation.widgetStringValue = item.sourceInfo[1].source_check
+                    }
+                    if annotation.fieldName == "ID_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_id
+                    }
+                    if annotation.fieldName == "Source_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_device
+                    }
+                    if annotation.fieldName == "Location_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_location
+                    }
+                    if annotation.fieldName == "Method_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_method
+                    }
+                    if annotation.fieldName == "Check_3" {
+                        annotation.widgetStringValue = item.sourceInfo[2].source_check
+                    }
+                    if annotation.fieldName == "ID_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_id
+                    }
+                    if annotation.fieldName == "Source_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_device
+                    }
+                    if annotation.fieldName == "Location_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_location
+                    }
+                    if annotation.fieldName == "Method_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_method
+                    }
+                    if annotation.fieldName == "Check_4" {
+                        annotation.widgetStringValue = item.sourceInfo[3].source_check
+                    }
+                    if annotation.fieldName == "ID_5" {
+                        annotation.widgetStringValue = item.sourceInfo[4].source_id
+                    }
+                    if annotation.fieldName == "Source_5" {
+                        annotation.widgetStringValue = item.sourceInfo[4].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_5" {
+                        annotation.widgetStringValue = item.sourceInfo[4].source_device
+                    }
+                    if annotation.fieldName == "Location_5" {
+                        annotation.widgetStringValue = item.sourceInfo[4].source_location
+                    }
+                    if annotation.fieldName == "Method_5" {
+                        annotation.widgetStringValue = item.sourceInfo[4].source_method
+                    }
+                    if annotation.fieldName == "Check_5" {
+                        annotation.widgetStringValue = item.sourceInfo[4].source_check
+                    }
+                    if annotation.fieldName == "ID_6" {
+                        annotation.widgetStringValue = item.sourceInfo[5].source_id
+                    }
+                    if annotation.fieldName == "Source_6" {
+                        annotation.widgetStringValue = item.sourceInfo[5].source_type.sourceString
+                    }
+                    if annotation.fieldName == "Device_6" {
+                        annotation.widgetStringValue = item.sourceInfo[5].source_device
+                    }
+                    if annotation.fieldName == "Location_6" {
+                        annotation.widgetStringValue = item.sourceInfo[5].source_location
+                    }
+                    if annotation.fieldName == "Method_6" {
+                        annotation.widgetStringValue = item.sourceInfo[5].source_method
+                    }
+                    if annotation.fieldName == "Check_6" {
+                        annotation.widgetStringValue = item.sourceInfo[5].source_check
+                    }
+                }
+                
+                if annotation.fieldName == "MachineStop" {
+                    annotation.widgetStringValue = item.machineShopSequence
+                }
+                if annotation.fieldName == "Isolate" {
+                    annotation.widgetStringValue = item.isolateSequence
+                }
+                if annotation.fieldName == "AdditionalNotes" {
+                    annotation.widgetStringValue = item.additionalNotes
+                }
+                if annotation.fieldName == "Company" {
+                    annotation.widgetStringValue = item.approvedByCompany
+                }
+                if annotation.fieldName == "CompletedBy" {
+                    annotation.widgetStringValue = item.completedBy
+                }
+                if annotation.fieldName == "ApprovedBy" {
+                    annotation.widgetStringValue = item.approvedBy
+                }
+                if annotation.fieldName == "ApprovalDate" {
+                    annotation.widgetStringValue = formatDateToMMDDYY(item.approvalDate)
                 }
             }
         }
