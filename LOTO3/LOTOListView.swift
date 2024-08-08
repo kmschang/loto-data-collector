@@ -80,13 +80,16 @@ struct LOTOListView: View {
     @State private var LOTOEdit: LOTO?
     @State private var LOTOShare: LOTO?
     
+    @State private var selectedRows = Set<String>()
+    @State private var isEditing: Bool = false
+    
     var body: some View {
         
         NavigationStack {
             Group {
                 ZStack {
                     // LOTO List
-                    List {
+                    List(selection: $selectedRows) {
                         Section (
                             header: CustomHeaderView(
                                 title: "All Forms",
@@ -209,6 +212,8 @@ struct LOTOListView: View {
                     .refreshable {
                         print("Refreshed")
                     }
+                    .environment(\.editMode, isEditing ? .constant(.active) : .constant(.inactive))
+
                     
                     // Add Button
                     HStack {
@@ -304,19 +309,12 @@ struct LOTOListView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 10) {
-                        Menu {
-                            Picker("Sort", selection: $selectedSortOption) {
-                                ForEach(sortOption.allCases) { option in
-                                    Label(option.sortString, systemImage: option.sortIconString)
-                                        .foregroundColor(option.sortIconColor)
-                                        .tag(option)
-                                }
-                            }
+                        Button {
+                            isEditing.toggle()
+                            print(isEditing)
                         } label: {
-                            Label("Sort", systemImage: selectedSortOption.sortIconString)
-                                .foregroundStyle(colorScheme == .dark ? .black : .white)
+                            Label("Select", systemImage: "checkmark.circle")
                         }
-                        .disabled(true)
 
                         Menu {
                             Picker("Filter", selection: $selectedFilterOption) {
