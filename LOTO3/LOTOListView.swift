@@ -36,6 +36,7 @@ struct LOTOListView: View {
     }
 
     @State private var deletedItems: [LOTO] = []
+    @State private var recoveredItems: [LOTO] = []
 
     func filterItems(_ items: [LOTO]) -> [LOTO] {
         switch selectedFilterOption {
@@ -292,6 +293,13 @@ struct LOTOListView: View {
                             Label("Undo", systemImage: "arrow.uturn.backward.circle")
                         }
                         .disabled(deletedItems.isEmpty)
+                        
+                        Button {
+                            redoDelete()
+                        } label: {
+                            Label("Redo", systemImage: "arrow.uturn.forward.circle")
+                        }
+                        .disabled(recoveredItems.isEmpty)
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
@@ -359,9 +367,17 @@ struct LOTOListView: View {
         try? modelContext.save()
     }
     
+    func redoDelete() {
+        guard let lastRecovered = recoveredItems.popLast() else { return }
+        lastRecovered.deleted = true
+        deletedItems.append(lastRecovered)
+        try? modelContext.save()
+    }
+    
     func undoDelete() {
         guard let lastDeleted = deletedItems.popLast() else { return }
         lastDeleted.deleted = false
+        recoveredItems.append(lastDeleted)
         try? modelContext.save()
     }
     
