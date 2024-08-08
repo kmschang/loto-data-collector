@@ -154,12 +154,12 @@ struct LOTOListView: View {
                                     }
                                     Button {
                                         withAnimation {
-                                            updateItem(item)
+                                            duplicateItem(item)
                                         }
                                     } label: {
-                                        Image(systemName: "pencil")
+                                        Image(systemName: "square.and.arrow.down.on.square.fill")
                                     }
-                                    .tint(.blue)
+                                    .tint(.green)
                                 }
                                 .swipeActions(edge: .leading, allowsFullSwipe: true) {
                                     Button {
@@ -172,12 +172,12 @@ struct LOTOListView: View {
                                     .tint(.yellow)
                                     Button {
                                         withAnimation {
-                                            duplicateItem(item)
+                                            updateItem(item)
                                         }
                                     } label: {
-                                        Image(systemName: "square.and.arrow.down.on.square.fill")
+                                        Image(systemName: "pencil")
                                     }
-                                    .tint(.green)
+                                    .tint(.blue)
                                 }
                             }
                         }

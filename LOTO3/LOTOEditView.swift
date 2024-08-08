@@ -99,7 +99,7 @@ struct LOTOEditView: View {
                         } label: {
                             Label("Add Source", systemImage: "plus")
                         }
-                        .disabled(item.sourceInfo.count >= 8)
+                        .disabled(item.sourceInfo.count >= 6)
                         
                     }
                         

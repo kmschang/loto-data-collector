@@ -89,10 +89,10 @@ struct SourceEditView: View {
                             }
                         }
                         
-//                        if let photoData = source.source_photo {
-//                            ShareLink(item: Image(uiImage: unwrapPhoto(photoData)),
-//                                      preview: SharePreview(source.source_id.isEmpty ? "\(source.source_type.sourceString) Source Photo" : "\(source.source_type.sourceString) - \(source.source_id) Source Photo", image: Image(uiImage: unwrapPhoto(photoData))))
-//                        }
+                        if let photoData = source.source_photo {
+                            ShareLink(item: Image(uiImage: unwrapPhoto(photoData)),
+                                      preview: SharePreview(source.source_id.isEmpty ? "\(source.source_type.sourceString) Source Photo" : "\(source.source_type.sourceString) - \(source.source_id) Source Photo", image: Image(uiImage: unwrapPhoto(photoData))))
+                        }
 
                         
                     }

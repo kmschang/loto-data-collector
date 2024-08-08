@@ -151,7 +151,7 @@ struct LOTOAddView: View {
                         } label: {
                             Label("Add Source", systemImage: "plus")
                         }
-                        .disabled(sourceInfo.count >= 8)
+                        .disabled(sourceInfo.count >= 6)
                         
                     }
                     
