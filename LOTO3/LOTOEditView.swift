@@ -131,7 +131,7 @@ struct LOTOEditView: View {
                         .font(.subheadline)
                     }
                 }
-                .scrollDismissesKeyboard(.interactively)
+                .scrollDismissesKeyboard(.immediately)
             }
             .sheet(item: $sourceEdit) {
                 sourceEdit = nil

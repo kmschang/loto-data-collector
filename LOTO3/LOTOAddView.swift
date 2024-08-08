@@ -181,7 +181,7 @@ struct LOTOAddView: View {
                         .font(.subheadline)
                     }
                 }
-                .scrollDismissesKeyboard(.interactively)
+                .scrollDismissesKeyboard(.immediately)
             }
             .onAppear {
                 startFocus = true

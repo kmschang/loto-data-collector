@@ -182,6 +182,9 @@ struct LOTOListView: View {
                             }
                         }
                     }
+                    .refreshable {
+                        print("Refreshed")
+                    }
                     
                     // Add Button
                     HStack {

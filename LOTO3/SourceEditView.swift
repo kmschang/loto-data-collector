@@ -97,7 +97,7 @@ struct SourceEditView: View {
                         
                     }
                 }
-                .scrollDismissesKeyboard(.interactively)
+                .scrollDismissesKeyboard(.immediately)
             }
             .fullScreenCover(isPresented: $showCamera) {
                 ImagePickerView(sourceType: .camera) { image in
