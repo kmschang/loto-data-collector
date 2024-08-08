@@ -7,6 +7,8 @@
 
 import SwiftUI
 import SwiftData
+import PDFKit
+import UIKit
 
 struct LOTOListView: View {
     
@@ -82,6 +84,10 @@ struct LOTOListView: View {
     
     @State private var selectedRows = Set<String>()
     @State private var isEditing: Bool = false
+    
+    @State private var multiDeleteAlert:Bool = false
+    
+    @State private var pdfURLsToShare: [URL] = []
     
     var body: some View {
         
@@ -209,11 +215,10 @@ struct LOTOListView: View {
                             }
                         }
                     }
-                    .refreshable {
-                        print("Refreshed")
-                    }
+//                    .refreshable {
+//                        print("Refreshed")
+//                    }
                     .environment(\.editMode, isEditing ? .constant(.active) : .constant(.inactive))
-
                     
                     // Add Button
                     HStack {
@@ -285,33 +290,68 @@ struct LOTOListView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    HStack(spacing: 10) {
-                        Button {
+                    withAnimation {
+                        ZStack {
+                            HStack(spacing: 10) {
+                                Button {
+                                    print("Settings")
+                                } label: {
+                                    Label("Settings", systemImage: "gear")
+                                }
+                                Button {
+                                    undoDelete()
+                                } label: {
+                                    Label("Undo", systemImage: "arrow.uturn.backward.circle")
+                                }
+                                .disabled(deletedItems.isEmpty)
+                                
+                                Button {
+                                    redoDelete()
+                                } label: {
+                                    Label("Redo", systemImage: "arrow.uturn.forward.circle")
+                                }
+                                .disabled(recoveredItems.isEmpty)
+                            }
+                            .opacity(isEditing ? 0 : 1)
                             
-                        } label: {
-                            Label("Settings", systemImage: "gear")
+                            HStack(spacing: 20) {
+                                Button() {
+                                    withAnimation {
+                                        multiDeleteAlert = true
+                                    }
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                        .foregroundStyle(.red)
+                                }
+                                .alert("Are you sure you want to delete \(selectedRows.count) \(selectedRows.count == 1 ? "item" : "items")? This can't be undone.", isPresented: $multiDeleteAlert) {
+                                            Button("Yes", role: .destructive) {
+                                                withAnimation {
+                                                    deleteSelectedItems()
+                                                    isEditing = false
+                                                }
+                                            }
+                                    Button("Cancel", role: .cancel) {
+                                        withAnimation {
+                                            isEditing = false
+                                        }
+                                    }
+                                }
+                                Button {
+
+                                } label: {
+                                    Label("Export", systemImage: "square.and.arrow.up")
+                                }
+                                Spacer()
+                            }
+                            .opacity(isEditing ? 1 : 0)
                         }
-                        
-                        Button {
-                            undoDelete()
-                        } label: {
-                            Label("Undo", systemImage: "arrow.uturn.backward.circle")
-                        }
-                        .disabled(deletedItems.isEmpty)
-                        
-                        Button {
-                            redoDelete()
-                        } label: {
-                            Label("Redo", systemImage: "arrow.uturn.forward.circle")
-                        }
-                        .disabled(recoveredItems.isEmpty)
                     }
+                    
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 10) {
                         Button {
                             isEditing.toggle()
-                            print(isEditing)
                         } label: {
                             Label("Select", systemImage: "checkmark.circle")
                         }
@@ -364,6 +404,15 @@ struct LOTOListView: View {
         deletedItems.append(item)
         try? modelContext.save()
     }
+    
+    private func deleteSelectedItems() {
+        let itemsToDelete = filteredAndSortedItems.filter { selectedRows.contains($0.id) }
+        itemsToDelete.forEach { item in
+            markAsDeleted(item)
+        }
+        selectedRows.removeAll()
+    }
+    
     
     func redoDelete() {
         guard let lastRecovered = recoveredItems.popLast() else { return }
@@ -638,4 +687,16 @@ struct CustomHeaderView: View {
                 }
         }
     }
+}
+
+
+struct ActivityViewController: UIViewControllerRepresentable {
+    var activityItems: [Any]
+    var applicationActivities: [UIActivity]? = nil
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        return UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
