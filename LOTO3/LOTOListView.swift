@@ -86,9 +86,7 @@ struct LOTOListView: View {
     @State private var isEditing: Bool = false
     
     @State private var multiDeleteAlert:Bool = false
-    
-    @State private var pdfURLsToShare: [URL] = []
-    
+        
     var body: some View {
         
         NavigationStack {
@@ -341,6 +339,7 @@ struct LOTOListView: View {
                                 } label: {
                                     Label("Export", systemImage: "square.and.arrow.up")
                                 }
+                                .disabled(true)
                                 Spacer()
                             }
                             .opacity(isEditing ? 1 : 0)
@@ -412,7 +411,6 @@ struct LOTOListView: View {
         }
         selectedRows.removeAll()
     }
-    
     
     func redoDelete() {
         guard let lastRecovered = recoveredItems.popLast() else { return }
