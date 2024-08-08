@@ -18,7 +18,7 @@ struct LOTOExportView: View {
         
     var body: some View {
         Group {
-            if let url = Bundle.main.url(forResource: "LOTO", withExtension: "pdf") {
+            if let url = Bundle.main.url(forResource: "LOTO_BlankForm", withExtension: "pdf") {
                 VStack {
                     HStack {
                         Button {
@@ -520,7 +520,7 @@ func fillPDFFields(url: URL, item:LOTO) -> PDFDocument? {
                 if annotation.fieldName == "AdditionalNotes" {
                     annotation.widgetStringValue = item.additionalNotes
                 }
-                if annotation.fieldName == "Company" {
+                if annotation.fieldName == "Client" {
                     annotation.widgetStringValue = item.approvedByCompany
                 }
                 if annotation.fieldName == "CompletedBy" {
