@@ -78,6 +78,8 @@ struct LOTOListView: View {
     
     @State private var LOTOEdit: LOTO?
     
+    @State private var LOTOShare: LOTO?
+    
     var body: some View {
         
         NavigationStack {
@@ -172,10 +174,10 @@ struct LOTOListView: View {
                                     .tint(.yellow)
                                     Button {
                                         withAnimation {
-                                            updateItem(item)
+                                            exportItem(item)
                                         }
                                     } label: {
-                                        Image(systemName: "pencil")
+                                        Image(systemName: "square.and.arrow.up")
                                     }
                                     .tint(.blue)
                                 }
@@ -224,6 +226,11 @@ struct LOTOListView: View {
                 LOTOEdit = nil
             } content: { item in
                 LOTOEditView(item: item)
+            }
+            .sheet(item: $LOTOShare) {
+                 LOTOShare = nil
+            } content: { item in
+                LOTOExportView(item: item)
             }
             .overlay {
                 if filteredAndSortedItems.isEmpty && !searchString.isEmpty {
@@ -306,6 +313,10 @@ struct LOTOListView: View {
     
     func updateItem(_ item:LOTO) {
         LOTOEdit = item
+    }
+    
+    func exportItem(_ item:LOTO) {
+        LOTOShare = item
     }
     
     func favoriteItem(_ item:LOTO) {
