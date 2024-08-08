@@ -119,7 +119,7 @@ struct LOTOListView: View {
                                                 }
                                             }
                                             switch selectedSortOption {
-                                            case .formName, .formDescription:
+                                            case .formName, .formDescription, .favorite:
                                                 if !item.formDescription.isEmpty {
                                                     Text(item.formDescription)
                                                         .font(.subheadline)
@@ -355,7 +355,7 @@ struct LOTOListView: View {
 
 enum sortOption: Int, Codable, Identifiable, CaseIterable {
     
-    case formName = 1, formDescription, procedureNumber, sourceType, dateAdded, dateEdited
+    case formName = 1, formDescription, favorite, procedureNumber, sourceType, dateAdded, dateEdited
     
     var id: Self {
         self
@@ -375,6 +375,8 @@ enum sortOption: Int, Codable, Identifiable, CaseIterable {
             return "Date Edited"
         case .sourceType:
             return "Source Type"
+        case .favorite:
+            return "Favorite"
         }
     }
     
@@ -392,6 +394,8 @@ enum sortOption: Int, Codable, Identifiable, CaseIterable {
             return "calendar"
         case .sourceType:
             return "poweroutlet.type.b"
+        case .favorite:
+            return "star"
         }
     }
     
@@ -409,29 +413,41 @@ enum sortOption: Int, Codable, Identifiable, CaseIterable {
             return .red
         case .sourceType:
             return .teal
+        case .favorite:
+            return .yellow
         }
     }
 }
 
-private extension [LOTO] {
-    
+private extension Array where Element == LOTO {
     func sort(on option: sortOption) -> [LOTO] {
         switch option {
         case .formName:
-            self.sorted(by: {$0.formName < $1.formName})
+            return self.sorted { $0.formName < $1.formName }
         case .formDescription:
-            self.sorted(by: {$0.formDescription < $1.formDescription})
+            return self.sorted { $0.formDescription < $1.formDescription }
         case .procedureNumber:
-            self.sorted(by: {$0.procedureNumber < $1.procedureNumber})
+            return self.sorted { $0.procedureNumber < $1.procedureNumber }
         case .dateAdded:
-            self.sorted(by: {$0.dateAdded > $1.dateAdded})
+            return self.sorted { $0.dateAdded > $1.dateAdded }
         case .dateEdited:
-            self.sorted(by: {$0.dateEdited > $1.dateEdited})
+            return self.sorted { $0.dateEdited > $1.dateEdited }
         case .sourceType:
-            self.sorted(by: { $0.sourceInfo.first?.source_type.rawValue ?? 0 < $1.sourceInfo.first?.source_type.rawValue ?? 0 })
+            return self.sorted {
+                ($0.sourceInfo.first?.source_type.rawValue ?? 0) <
+                ($1.sourceInfo.first?.source_type.rawValue ?? 0)
+            }
+        case .favorite:
+            return self.sorted {
+                // First, sort by favorite status (true first), then by formName
+                if $0.favorite.isTrue != $1.favorite.isTrue {
+                    return $0.favorite.isTrue && !$1.favorite.isTrue
+                } else {
+                    return $0.formName < $1.formName
+                }
+            }
         }
     }
-    
 }
 
 enum filterOption: Int, Codable, Identifiable, CaseIterable {
