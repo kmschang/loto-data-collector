@@ -15,7 +15,7 @@ struct LOTOExportView: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var exportAlert:Bool = false
-    
+        
     var body: some View {
         Group {
             if let url = Bundle.main.url(forResource: "LOTO", withExtension: "pdf") {
@@ -27,23 +27,11 @@ struct LOTOExportView: View {
                             Text("Done")
                         }
                         Spacer()
-                        Button {
-                            exportAlert = !checkIsFilled(item)
-                        } label: {
-                            Image(systemName: "square.and.arrow.up")
-                        }
-                        .alert("Are you sure you want to export? Not all fields are filled.", isPresented: $exportAlert) {
-                                Button("Yes", role: .destructive) {
-                                    print("Exporting")
-                                }
-                                Button("Cancel", role: .cancel) {
-                                    dismiss()
-                                }
-                        }
+                        ShareLink(item: savePDFDocumentToTemporaryFile(pdfDocument: fillPDFFields(url: url, item: item) ?? PDFDocument(), item: item) ?? URL(fileURLWithPath: ""))
                     }
                     .padding(.top, 10)
                     .padding(.horizontal, 15)
-                    PDFKitView(url: url, description: item.formName, item: item)
+                    PDFKitView(url: url, item: item)
                 }
             } else {
                 VStack(spacing: 10){
@@ -76,7 +64,27 @@ func checkIsFilled(_ item:LOTO) -> Bool {
     }
 }
 
-func fillPDFFields(url: URL, description: String, item:LOTO) -> PDFDocument? {
+
+func savePDFDocumentToTemporaryFile(pdfDocument: PDFDocument, item:LOTO) -> URL? {
+    guard let pdfData = pdfDocument.dataRepresentation() else {
+        return nil
+    }
+    
+    // Get the temporary directory URL
+    let temporaryDirectory = FileManager.default.temporaryDirectory
+    let fileURL = temporaryDirectory.appendingPathComponent("\(item.formName).pdf")
+    
+    do {
+        // Write the PDF data to the file
+        try pdfData.write(to: fileURL, options: .atomic)
+        return fileURL
+    } catch {
+        print("Error saving PDF to temporary file: \(error)")
+        return nil
+    }
+}
+
+func fillPDFFields(url: URL, item:LOTO) -> PDFDocument? {
     guard let document = PDFDocument(url: url) else { return nil }
     
     let numSources:Int = item.sourceInfo.count
@@ -533,12 +541,11 @@ func fillPDFFields(url: URL, description: String, item:LOTO) -> PDFDocument? {
 
 struct PDFKitView: UIViewRepresentable {
     let url: URL
-    let description: String
     let item: LOTO
     
     func makeUIView(context: Context) -> PDFView {
         let pdfView = PDFView()
-        if let filledDocument = fillPDFFields(url: self.url, description: self.description, item: self.item) {
+        if let filledDocument = fillPDFFields(url: self.url, item: self.item) {
             pdfView.document = filledDocument
         } else {
             pdfView.document = PDFDocument(url: self.url)

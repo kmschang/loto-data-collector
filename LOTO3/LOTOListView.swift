@@ -491,7 +491,7 @@ enum filterOption: Int, Codable, Identifiable, CaseIterable {
     var filterIconString: String {
         switch self {
         case .all :
-            return "list.bullet"
+            return "ellipsis.circle"
         case .favorite:
             return "star.fill"
         case .inProgress:
