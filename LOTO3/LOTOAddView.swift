@@ -112,7 +112,9 @@ struct LOTOAddView: View {
                     
                     Section(header: Text("Sources")) {
                         
-                        ForEach(sourceInfo) { source in
+                        let sortedSources = sourceInfo.sorted { $0.source_type < $1.source_type }
+                        
+                        ForEach(sortedSources) { source in
                             Button {
                                 sourceEdit = source
                             } label: {

@@ -59,8 +59,9 @@ struct LOTOEditView: View {
                     
                     Section(header: Text("Sources")) {
                         
+                        let sortedSources = item.sourceInfo.sorted { $0.source_type < $1.source_type }
                         
-                        ForEach(item.sourceInfo) { source in
+                        ForEach(sortedSources) { source in
                             Button {
                                 sourceEdit = source
                             } label: {

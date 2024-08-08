@@ -578,7 +578,7 @@ struct sourceDescription: View {
         HStack(spacing: 10) {
             ForEach(Array(Set(item.sourceInfo.map { $0.source_type })), id: \.self) { sourceType in
                 HStack(spacing: 2) {
-                    if (UIScreen.screenWidth >= 600) {
+                    if (UIScreen.screenWidth >= 700) {
                         Image(systemName: sourceType.sourceIconString)
                             .foregroundColor(sourceType.sourceColor)
                         Text(sourceType.sourceString)
