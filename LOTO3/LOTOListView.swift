@@ -145,6 +145,28 @@ struct LOTOListView: View {
                                         Image(systemName: "chevron.right")
                                     }
                                 }
+                                .contextMenu {
+                                    Button {
+                                        updateItem(item)
+                                    } label: {
+                                        Label("Edit", systemImage: "pencil")
+                                    }
+                                    Button {
+                                        favoriteItem(item)
+                                    } label: {
+                                        Label("Favorite", systemImage: "star.fill")
+                                    }
+                                    Button {
+                                        exportItem(item)
+                                    } label: {
+                                        Label("Export", systemImage: "square.and.arrow.up")
+                                    }
+                                    Button {
+                                        markAsDeleted(item)
+                                    } label: {
+                                        Label("Delete", systemImage: "trash.fill")
+                                    }
+                                }
                                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                     Button(role: .destructive) {
                                         withAnimation {
