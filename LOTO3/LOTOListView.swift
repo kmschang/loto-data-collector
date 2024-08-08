@@ -574,13 +574,19 @@ struct sourceDescription: View {
     let item: LOTO
     
     var body: some View {
-        HStack(spacing: 5) {
+        
+        HStack(spacing: 10) {
             ForEach(Array(Set(item.sourceInfo.map { $0.source_type })), id: \.self) { sourceType in
                 HStack(spacing: 2) {
-                    Image(systemName: sourceType.sourceIconString)
-                        .foregroundColor(sourceType.sourceColor)
-                    Text(sourceType.sourceString)
-                        .font(.caption)
+                    if (UIScreen.screenWidth >= 600) {
+                        Image(systemName: sourceType.sourceIconString)
+                            .foregroundColor(sourceType.sourceColor)
+                        Text(sourceType.sourceString)
+                            .font(.caption)
+                    } else {
+                        Image(systemName: sourceType.sourceIconString)
+                            .foregroundColor(sourceType.sourceColor)
+                    }
                 }
             }
         }
