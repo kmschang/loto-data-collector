@@ -37,8 +37,8 @@ struct LOTOListView: View {
         }
     }
 
-    @State private var deletedItems: [LOTO] = []
-    @State private var recoveredItems: [LOTO] = []
+    @State private var deletedItems: [[LOTO]] = [[]]
+    @State private var recoveredItems: [[LOTO]] = [[]]
 
     func filterItems(_ items: [LOTO]) -> [LOTO] {
         switch selectedFilterOption {
@@ -400,29 +400,39 @@ struct LOTOListView: View {
     
     func markAsDeleted(_ item: LOTO) {
         item.deleted = true
-        deletedItems.append(item)
+        deletedItems.append([item])
         try? modelContext.save()
     }
     
     private func deleteSelectedItems() {
         let itemsToDelete = filteredAndSortedItems.filter { selectedRows.contains($0.id) }
+        var nowDeletedItems:[LOTO] = []
         itemsToDelete.forEach { item in
-            markAsDeleted(item)
+            deletedItems.append([])
+            item.deleted = true
+            nowDeletedItems.append(item)
         }
+        deletedItems.append(nowDeletedItems)
+        try? modelContext.save()
         selectedRows.removeAll()
     }
     
     func redoDelete() {
         guard let lastRecovered = recoveredItems.popLast() else { return }
-        lastRecovered.deleted = true
-        deletedItems.append(lastRecovered)
+        for item in lastRecovered {
+            item.deleted = true
+            deletedItems.append(lastRecovered)
+        }
         try? modelContext.save()
     }
     
     func undoDelete() {
         guard let lastDeleted = deletedItems.popLast() else { return }
-        lastDeleted.deleted = false
-        recoveredItems.append(lastDeleted)
+        for item in lastDeleted {
+            item.deleted = false
+            recoveredItems.append(lastDeleted)
+        }
+        
         try? modelContext.save()
     }
     
