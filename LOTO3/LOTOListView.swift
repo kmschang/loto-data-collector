@@ -37,8 +37,8 @@ struct LOTOListView: View {
         }
     }
 
-    @State private var deletedItems: [[LOTO]] = [[]]
-    @State private var recoveredItems: [[LOTO]] = [[]]
+    @State private var deletedItems: [[LOTO]] = []
+    @State private var recoveredItems: [[LOTO]] = []
 
     func filterItems(_ items: [LOTO]) -> [LOTO] {
         switch selectedFilterOption {
@@ -313,7 +313,7 @@ struct LOTOListView: View {
                             .opacity(isEditing ? 0 : 1)
                             
                             HStack(spacing: 20) {
-                                Button() {
+                                Button {
                                     withAnimation {
                                         multiDeleteAlert = true
                                     }
@@ -329,11 +329,10 @@ struct LOTOListView: View {
                                                 }
                                             }
                                     Button("Cancel", role: .cancel) {
-                                        withAnimation {
-                                            isEditing = false
-                                        }
+                                        withAnimation {}
                                     }
                                 }
+                                .disabled(selectedRows.count == 0)
                                 Button {
 
                                 } label: {
@@ -408,7 +407,6 @@ struct LOTOListView: View {
         let itemsToDelete = filteredAndSortedItems.filter { selectedRows.contains($0.id) }
         var nowDeletedItems:[LOTO] = []
         itemsToDelete.forEach { item in
-            deletedItems.append([])
             item.deleted = true
             nowDeletedItems.append(item)
         }
@@ -419,20 +417,23 @@ struct LOTOListView: View {
     
     func redoDelete() {
         guard let lastRecovered = recoveredItems.popLast() else { return }
+        var nowRedoneItems:[LOTO] = []
         for item in lastRecovered {
             item.deleted = true
-            deletedItems.append(lastRecovered)
+            nowRedoneItems.append(item)
         }
+        deletedItems.append(nowRedoneItems)
         try? modelContext.save()
     }
     
     func undoDelete() {
         guard let lastDeleted = deletedItems.popLast() else { return }
+        var nowUndoneItems:[LOTO] = []
         for item in lastDeleted {
             item.deleted = false
-            recoveredItems.append(lastDeleted)
+            nowUndoneItems.append(item)
         }
-        
+        recoveredItems.append(nowUndoneItems)
         try? modelContext.save()
     }
     
