@@ -27,7 +27,20 @@ struct LOTO3App: App {
 
     var body: some Scene {
         WindowGroup {
-            LOTOListView()
+            TabView {
+                NavigationView {
+                    LOTOListView()
+                }
+                .tabItem {
+                    Label("Data", systemImage: "list.bullet")
+                }
+                NavigationView {
+                    LOTODownloadListView()
+                }
+                .tabItem {
+                    Label("Downloads", systemImage: "square.and.arrow.down.on.square")
+                }
+            }
         }
         .modelContainer(sharedModelContainer)
     }

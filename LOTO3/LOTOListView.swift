@@ -263,6 +263,11 @@ struct LOTOListView: View {
                 LOTOExportView(item: item)
                     .interactiveDismissDisabled()
             }
+            .sheet(isPresented: $showSettingsSheet, content: {
+                NavigationView {
+                    LOTOSettingView()
+                }
+            })
             .overlay {
                 if filteredAndSortedItems.isEmpty && !searchString.isEmpty {
                     ContentUnavailableView(
@@ -292,7 +297,7 @@ struct LOTOListView: View {
                         ZStack {
                             HStack(spacing: 10) {
                                 Button {
-                                    print("Settings")
+                                    showSettingsSheet = true
                                 } label: {
                                     Label("Settings", systemImage: "gear")
                                 }
