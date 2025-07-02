@@ -224,14 +224,14 @@ struct LOTOListView: View {
                         VStack {
                             Spacer()
                             Button {
-                                showAddSheet.toggle()
+                                isEditing ? isEditing.toggle() : showAddSheet.toggle()
                             } label: {
                                 HStack(spacing: 10) {
-                                    Image(systemName: "plus")
+                                    Image(systemName: isEditing ? "xmark" : "plus")
                                         .font(.system(size: 30))
                                 }
                             }
-                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                            .foregroundColor(isEditing ? .red : colorScheme == .dark ? .white : .black)
                             .padding()
                             .background(colorScheme == .dark ? Color(hex: "1C1C1F") : Color(hex: "EFEFF0"))
                             .cornerRadius(50)
