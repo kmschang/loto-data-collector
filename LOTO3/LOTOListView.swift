@@ -324,7 +324,8 @@ struct LOTOListView: View {
                                     }
                                 } label: {
                                     Label("Delete", systemImage: "trash")
-                                        .foregroundStyle(.red)
+                                        .foregroundStyle(selectedRows.count == 0 ? Color.gray : .red)
+                                        .opacity(selectedRows.count == 0 ? 0.5 : 1)
                                 }
                                 .alert("Are you sure you want to delete \(selectedRows.count) \(selectedRows.count == 1 ? "item" : "items")? This can't be undone.", isPresented: $multiDeleteAlert) {
                                             Button("Yes", role: .destructive) {
@@ -339,11 +340,18 @@ struct LOTOListView: View {
                                 }
                                 .disabled(selectedRows.count == 0)
                                 Button {
-
+                                    if let selectedId = selectedRows.first,
+                                       selectedRows.count == 1,
+                                       let item = filteredAndSortedItems.first(where: { $0.id == selectedId }) {
+                                        exportItem(item)
+                                        withAnimation {
+                                            isEditing = false
+                                        }
+                                    }
                                 } label: {
                                     Label("Export", systemImage: "square.and.arrow.up")
                                 }
-                                .disabled(true)
+                                .disabled(selectedRows.count != 1)
                                 Spacer()
                             }
                             .opacity(isEditing ? 1 : 0)
@@ -369,9 +377,10 @@ struct LOTOListView: View {
                             }
                         } label: {
                             Label("Filter", systemImage: selectedFilterOption.filterIconString)
-                                .foregroundStyle(selectedFilterOption.filterIconColor)
-                                .tint(selectedFilterOption.filterIconColor)
+                                .tint(selectedRows.count < 0 ? Color.gray : selectedFilterOption.filterIconColor)
+                                .opacity(selectedRows.count < 0 ? 0.5 : 1)
                         }
+                        .disabled(isEditing)
                     }
                 }
             }
