@@ -1,11 +1,11 @@
-# 📌 loto-data-collector
-`loto-data-collector` is a Swift app for field data collection and management of Lockout/Tagout (LOTO) protocols. 
+# 📌 loto-data-collection
+`loto-data-collection` is a Swift app for field data collection and management of Lockout/Tagout (LOTO) protocols. 
 
-![GitHub License](https://img.shields.io/github/license/kmschang/loto-data-collector)
-![GitHub Release](https://img.shields.io/github/v/release/kmschang/loto-data-collector)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/t/kmschang/loto-data-collector)
-![GitHub last commit](https://img.shields.io/github/last-commit/kmschang/loto-data-collector)
-![GitHub contributors](https://img.shields.io/github/contributors/kmschang/loto-data-collector)
+![GitHub License](https://img.shields.io/github/license/kmschang/loto-data-collection)
+![GitHub Release](https://img.shields.io/github/v/release/kmschang/loto-data-collection)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/kmschang/loto-data-collection)
+![GitHub last commit](https://img.shields.io/github/last-commit/kmschang/loto-data-collection)
+![GitHub contributors](https://img.shields.io/github/contributors/kmschang/loto-data-collection)
 
 ---
 
@@ -19,7 +19,7 @@
 
 ## Overview  
 
-`loto-data-collector` is a mobile app built with Swift for efficient data collection and management of Lockout/Tagout (LOTO) procedures. Designed for technicians and safety teams, this app streamlines the process of recording LOTO events, equipment details, and compliance checks directly from the field. Data can be exported for reporting and integration with other safety management systems, supporting safer and more organized operations.
+`loto-data-collection` is a mobile app built with Swift for efficient data collection and management of Lockout/Tagout (LOTO) procedures. Designed for technicians and safety teams, this app streamlines the process of recording LOTO events, equipment details, and compliance checks directly from the field. Data can be exported for reporting and integration with other safety management systems, supporting safer and more organized operations.
 
 ---
 
