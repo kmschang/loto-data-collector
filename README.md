@@ -41,7 +41,7 @@
 ## Tech Stack  
 
 - **Frontend**: SwiftUI  
-- **Backend**: SwiftUI, FastAPI  
+- **Backend**: SwiftUI, FastAPI, [loto-report-generator](https://github.com/kscardinal/loto-report-generator)
 - **Database**: N/A  
 - **Other Tools**: ReportLab  
 
