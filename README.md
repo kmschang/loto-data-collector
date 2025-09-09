@@ -13,113 +13,37 @@
 - [Overview](#Overview)
 - [Features](#features)
 - [Tech Stack](#Tech-Stack)
-- [Project Structure](#project-structure)
-- [Setup](#setup)
-- [Usage](#usage)
-- [Customization](#customization)
-- [API Endpoints](#API-Endpoints)
 - [License](#License)
 
 ---
 
 ## Overview  
 
-`loto-data-collector` is a Python-based tool designed to automate the creation of PDF reports for lockout/tagout (LOTO) procedures. It streamlines the reporting process by integrating custom templates, images, and fonts, allowing users to generate professional and consistent documentation. The application is configurable for different environments and can be easily customized to fit specific organizational needs, making it ideal for safety compliance and operational record-keeping.  
+`loto-data-collector` is a mobile app built with Swift for efficient data collection and management of Lockout/Tagout (LOTO) procedures. Designed for technicians and safety teams, this app streamlines the process of recording LOTO events, equipment details, and compliance checks directly from the field. Data can be exported for reporting and integration with other safety management systems, supporting safer and more organized operations.
 
 ---
 
 ## Features  
 
-1. **Automated PDF Generation**: Instantly creates professional LOTO reports using custom templates, images, and fonts for a polished look.
-2. **Environment Configuration via .env**: Easily adapts to different server setups and deployment scenarios with simple environment variable management.
-3. **Extensible Data Input**: Supports dynamic data sources (like JSON) for flexible report customization and integration with other systems.
-4. **Modular Design**: Separates logic for PDF creation, automation, and templating, making it easy to extend or modify for future enhancements.
+- Mobile Data Entry: Quickly record Lockout/Tagout events and details from the field using an intuitive interface.
+- Equipment Tracking: Log equipment, locations, and personnel involved in each LOTO procedure.
+- Compliance Checklists: Built-in checklists to ensure all safety steps are followed and documented.
+- Photo Attachments: Add photos to LOTO records for visual verification and audit trails.
+- Offline Support: Collect and store data even without an internet connection; sync when online.
+- Export & Integration: Export collected data for reporting or integration with other safety management systems.
+- User Authentication: Secure access for authorized users only.
+- Search & Filter: Easily find and review past LOTO records by date, equipment, or personnel.
+- Customizable Forms: Adapt data entry forms to match your organization’s specific LOTO protocols.
+- Notifications & Reminders: Get alerts for scheduled LOTO procedures or incomplete records.
 
 ---
 
 ## Tech Stack  
 
-- **Frontend**: HTML  
-- **Backend**: Python, FastAPI  
+- **Frontend**: SwiftUI  
+- **Backend**: SwiftUI, FastAPI  
 - **Database**: N/A  
-- **Other Tools**: ReportLab, UV  
-
----
-
-## Project Structure  
-
-- loto-data-collector/
-- ├── `includes/`                # Photos and fonts
-- ├── `src/`                         # Python files
-- ├── [`automate_pdf.py`](automate_pdf.py)     # Generates PDF report on server
-- ├── [`generate_pdf.py`](generate_pdf.py)     # Generate PDF on device
-- ├── [`main.py`](main.py)                    # Entry point for running the application
-- ├── [`main.html`](main.html)                # Web input for data
-- └── [`test_data.json`](test_data.json)       # Test JSON data for report generation
-
-
----
-
-## Setup
-
-1. **Install uv**
-	Download and install [uv](https://github.com/astral-sh/uv) from the official repository or use:
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-uv self update
-uv python install 3.13
-```
-
-2. **Create a virtual environment**
-```bash
-uv venv
-```
-
-3. **Install dependencies**
-```bash
-uv pip install -e .
-```
-
-4. **Add a `.env` file**
-	- Create a file named `.env` in the project root directory.
-	- Add the following line (replace with your server IP, no quotes):
-```bash
-SERVER_IP = your.server.ip.address
-```
-
----
-
-## Usage
-
-1. Add included photos to root folder
-2. Run the automate_pdf script:
-```python
-python automate_pdf.py
-```
--- or --
-```python
-python main.py
-```
-
----
-
-## Customization
-
-- Upload `.json` file with your own data
-- Modify `generate_pdf.py` for custom report layouts
-- Place additional images or fonts in the `inlcudes/` folder as needed
-
----
-
-## API Endpoints
-
-| Endpoint                   | Method | Description                                       |
-| -------------------------- | ------ | ------------------------------------------------- |
-| `/upload`                  | POST   | Uploads files (JSON and other types) to server    |
-| `/generate`                | POST   | Trigger PDF generation from a specified JSON file |
-| `/transfer/{pdf_filename}` | GET    | Downloads a generated PDF by filename             |
-| `/clear`                   | POST   | Clears all temporary files from the server        |
-
+- **Other Tools**: ReportLab  
 
 ---
 
